@@ -72,4 +72,13 @@ class UserModel
 
         return new JsonResponse(['success' => true]);
     }
+
+    public function getUserData(User $user): JsonResponse
+    {
+        return new JsonResponse([
+            'id' => $user->getId(),
+            'username' => $user->getUsername(),
+            'roles' => $user->getRoles(),
+        ]);
+    }
 }
