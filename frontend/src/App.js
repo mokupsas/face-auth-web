@@ -1,6 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { AlertProvider } from './components/alert/AlertProvider';
+import { Provider } from 'react-redux'
+import store from './store'
 // Layouts
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
@@ -21,20 +23,22 @@ function App() {
   });
 
   return (
-    <AlertProvider>
-      <ThemeProvider theme={THEME}>
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            <Route path="/" element={<Home />} />
-          </Route>
-          <Route element={<AuthLayout />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/login-face" element={<LoginFace />} />
-            <Route path="/register" element={<Register />} />
-          </Route>
-        </Routes>
-      </ThemeProvider>
-    </AlertProvider>
+    <Provider store={store}>
+      <AlertProvider>
+        <ThemeProvider theme={THEME}>
+          <Routes>
+            <Route path="/" element={<MainLayout />}>
+              <Route path="/" element={<Home />} />
+            </Route>
+            <Route element={<AuthLayout />}>
+              <Route path="/login" element={<Login />} />
+              <Route path="/login-face" element={<LoginFace />} />
+              <Route path="/register" element={<Register />} />
+            </Route>
+          </Routes>
+        </ThemeProvider>
+      </AlertProvider>
+    </Provider>
   );
 }
 

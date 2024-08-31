@@ -3,12 +3,18 @@ import ApiUrl from '../ApiUrl';
 import axios from 'axios';
 import TextInput from '../components/input/TextInput';
 import PasswordInput from '../components/input/PasswordInput';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAlertProvider } from '../components/alert/AlertProvider';
 import { AlertType } from '../components/alert/AlertType';
 import Alert from '../components/alert/Alert';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../store/user';
 
 export default function () {
+  const navigate = useNavigate();
+  // redux
+  const dispatch = useDispatch()
+  // login
   const [isLoading, setIsLoading] = useState(false)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -29,6 +35,10 @@ export default function () {
         // Success
         if (data.success) {
           setAlert('Successful login', AlertType.success)
+          dispatch(setUser(data))
+          setTimeout(() => {
+            navigate('/')
+          }, 1800)
         } else if (data.message) {
           setAlert(data.message, AlertType.warning)
         }
