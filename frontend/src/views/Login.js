@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ApiUrl from '../ApiUrl';
 import axios from 'axios';
 import TextInput from '../components/input/TextInput';
@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAlertProvider } from '../components/alert/AlertProvider';
 import { AlertType } from '../components/alert/AlertType';
 import Alert from '../components/alert/Alert';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../store/user';
 
 export default function () {
@@ -21,6 +21,13 @@ export default function () {
   const [validationErrors, setValidationErrors] = useState(null)
   // alerts
   const { setAlert, clearAlert } = useAlertProvider()
+
+  const isLoggedIn = useSelector((state) => state.user.username)
+
+  useEffect(() => {
+    if (isLoggedIn)
+      navigate('/')
+  }, [])
 
   const login = async () => {
     clearAlert()

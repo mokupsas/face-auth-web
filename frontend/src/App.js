@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { AlertProvider } from './components/alert/AlertProvider';
 import { Provider } from 'react-redux'
@@ -12,8 +12,14 @@ import Login from "./views/Login";
 import Register from "./views/Register";
 import LoginFace from "./views/LoginFace";
 import axios from "axios";
+import ApiUrl from "./ApiUrl";
+import { setUser } from "./store/user";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [ready, setReady] = useState(false)
+  const navigate = useNavigate();
+
   axios.defaults.withCredentials = true
 
   const THEME = createTheme({
@@ -21,6 +27,29 @@ function App() {
       "fontFamily": `"Roboto", "Helvetica", "Arial", sans-serif`,
     }
   });
+
+  const fetchUserData = async () => {
+    axios.get(ApiUrl.ME)
+      .then(function (response) {
+        const { data } = response
+        // Success
+        if (data) {
+          console.log(data)
+          store.dispatch(setUser(data))
+        }
+      })
+      .catch(function (error) {
+        navigate('/login')
+      })
+      .finally(() => setReady(true));
+  }
+
+  useEffect(() => {
+    fetchUserData()
+  }, [])
+
+  if (!ready)
+    return
 
   return (
     <Provider store={store}>

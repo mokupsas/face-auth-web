@@ -60,7 +60,11 @@ class UserModel
 
         $this->security->login($user);
 
-        return new JsonResponse(['success' => true]);
+        return new JsonResponse([
+            'success' => true,
+            'id' => $user->getId(),
+            'username' => $user->getUsername(),
+        ]);
     }
 
     public function logout(): JsonResponse

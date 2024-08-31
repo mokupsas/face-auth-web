@@ -5,4 +5,5 @@ export default {
   LOGIN: `${API_URL}/api/auth/login`,
   REGISTER: `${API_URL}/api/auth/register`,
   LOGOUT: `${API_URL}/api/auth/logout`,
+  ME: `${API_URL}/api/users/me`,
 }
