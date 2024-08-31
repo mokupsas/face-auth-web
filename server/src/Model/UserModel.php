@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserModel
@@ -52,10 +53,10 @@ class UserModel
     public function login(LoginDTO $loginDTO): JsonResponse
     {
         if (!$user = $this->userRepository->findOneBy(['username' => $loginDTO->username]))
-            return new JsonResponse(['message' => UserMessage::LOGIN_BAD_CREDENTIALS]);
+            throw new UnauthorizedHttpException('json', UserMessage::LOGIN_BAD_CREDENTIALS);
 
         if (!$this->passwordHasher->isPasswordValid($user, $loginDTO->password))
-            return new JsonResponse(['message' => UserMessage::LOGIN_BAD_CREDENTIALS]);
+            throw new UnauthorizedHttpException('json', UserMessage::LOGIN_BAD_CREDENTIALS);
 
         $this->security->login($user);
 
