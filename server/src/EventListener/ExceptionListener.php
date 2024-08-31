@@ -49,10 +49,7 @@ class ExceptionListener
     {
         $validationErrors = [];
         foreach ($list as $error) {
-            $validationErrors[] = [
-                'name' => $error->getPropertyPath(),
-                'message' => $error->getMessage(),
-            ];
+            $validationErrors[$error->getPropertyPath()] = $error->getMessage();
         }
         return ['validation' => $validationErrors];
     }
